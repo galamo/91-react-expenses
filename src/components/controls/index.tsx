@@ -6,8 +6,10 @@ export default function Controls(props: {
   isAddExpenseVisible: boolean;
   changeExpenseVisibility: Function;
   options: Array<{ code: string; name: string }> | any;
+  setYearHandler: Function;
+  selectedYear: any;
 }) {
-  const { isAddExpenseVisible, changeExpenseVisibility } = props;
+  const { isAddExpenseVisible, changeExpenseVisibility, selectedYear } = props;
   const text = isAddExpenseVisible ? "Hide" : "Show";
   return (
     <div style={styles.mainDiv}>
@@ -22,8 +24,10 @@ export default function Controls(props: {
         </Button>
         <Button>Reports</Button>
         <Dropdown
-          value={"2022"}
-          //   onChange={(e) => setCategory(e.value)}
+          value={selectedYear}
+          onChange={(e) => {
+            props.setYearHandler(e.value);
+          }}
           options={props.options}
           optionLabel="name"
           placeholder="Select a Year"

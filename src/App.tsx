@@ -10,6 +10,7 @@ import { data } from "./data";
 function App() {
   const [isAddExpenseVisible, setIsExpenseVisible] = useState(true);
   const [expenses, setExpenses] = useState(data);
+  const [selectedYear, setSelectedYear] = useState(null);
   const handler = (expenseVisibility: boolean) => {
     setIsExpenseVisible(expenseVisibility);
   };
@@ -45,7 +46,9 @@ function App() {
     return {
       changeExpenseVisibility: handler,
       isAddExpenseVisible: isAddExpenseVisible,
-      options: Object.values(allYears),
+      options: [{ code: "all", name: "All" }, ...Object.values(allYears)],
+      setYearHandler: setSelectedYear,
+      selectedYear,
     };
   }
 }
