@@ -21,10 +21,15 @@ export default function AddExpense(props: { onSave: Function }) {
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<string>();
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState<any>();
 
   function handler() {
-    props.onSave({ title, amount, date, category });
+    props.onSave({
+      name: title,
+      amount,
+      date: new Date(date as any),
+      category: category.name,
+    });
   }
   return (
     <div className={css.addExpenseForm}>

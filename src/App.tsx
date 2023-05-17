@@ -10,7 +10,10 @@ import { data } from "./data";
 function App() {
   const [isAddExpenseVisible, setIsExpenseVisible] = useState(true);
   const [expenses, setExpenses] = useState(data);
-  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedYear, setSelectedYear] = useState<{
+    name: string;
+    code: string;
+  } | null>(null);
   const handler = (expenseVisibility: boolean) => {
     setIsExpenseVisible(expenseVisibility);
   };
@@ -25,6 +28,12 @@ function App() {
       return yearsObj;
     }, {});
 
+  const filteredExpenses =
+    !selectedYear || selectedYear?.code === "all"
+      ? expenses
+      : expenses.filter((e) => {
+          return e.date.getFullYear().toString() === selectedYear?.code;
+        });
   return (
     <div style={{ background: "coral" }}>
       {expenses.length}
@@ -38,7 +47,7 @@ function App() {
         />
       ) : null}
       <Reports />
-      <ExpensesList />
+      <ExpensesList expenses={filteredExpenses} />
     </div>
   );
 
