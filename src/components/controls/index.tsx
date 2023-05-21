@@ -4,12 +4,23 @@ import { Dropdown } from "primereact/dropdown";
 
 export default function Controls(props: {
   isAddExpenseVisible: boolean;
+  isReportsVisible: boolean;
   changeExpenseVisibility: Function;
-  options: Array<{ code: string; name: string }> | any;
+  changeReportsVisibility: Function;
+  yearsOptions: Array<{ code: string; name: string }> | any;
+  categoriesOptions: Array<{ code: string; name: string }> | any;
   setYearHandler: Function;
   selectedYear: any;
+  selectedCategory: any;
+  setCategoryHandler: Function;
 }) {
-  const { isAddExpenseVisible, changeExpenseVisibility, selectedYear } = props;
+  const {
+    isAddExpenseVisible,
+    changeExpenseVisibility,
+    selectedYear,
+    changeReportsVisibility,
+    isReportsVisible,
+  } = props;
   const text = isAddExpenseVisible ? "Hide" : "Show";
   return (
     <div style={styles.mainDiv}>
@@ -22,15 +33,32 @@ export default function Controls(props: {
         >
           {text} Expense Form
         </Button>
-        <Button>Reports</Button>
+        <Button
+          onClick={() => {
+            changeReportsVisibility(!isReportsVisible);
+          }}
+        >
+          Reports
+        </Button>
         <Dropdown
           value={selectedYear}
           onChange={(e) => {
             props.setYearHandler(e.value);
           }}
-          options={props.options}
+          options={props.yearsOptions}
           optionLabel="name"
           placeholder="Select a Year"
+          filter
+          className="w-full md:w-14rem"
+        />
+        <Dropdown
+          value={props.selectedCategory}
+          onChange={(e) => {
+            props.setCategoryHandler(e.value);
+          }}
+          options={props.categoriesOptions}
+          optionLabel="name"
+          placeholder="Select a Category"
           filter
           className="w-full md:w-14rem"
         />

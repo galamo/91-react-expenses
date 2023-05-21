@@ -20,7 +20,6 @@ export default function ExpensesList(props: { expenses: Array<ExpenseType> }) {
 }
 
 const expenseTemplate = (item: ExpenseType) => {
-  console.log(item);
   return (
     <div
       key={item.name}

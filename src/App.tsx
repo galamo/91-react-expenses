@@ -8,9 +8,14 @@ import Reports from "./components/reports";
 import { data } from "./data";
 // type Expense = (typeof data)[0];
 function App() {
-  const [isAddExpenseVisible, setIsExpenseVisible] = useState(true);
+  const [isAddExpenseVisible, setIsExpenseVisible] = useState(false);
+  const [isReportsVisible, setIsReportsVisible] = useState(false);
   const [expenses, setExpenses] = useState(data);
   const [selectedYear, setSelectedYear] = useState<{
+    name: string;
+    code: string;
+  } | null>(null);
+  const [selectedCategory, setCategory] = useState<{
     name: string;
     code: string;
   } | null>(null);
@@ -28,15 +33,30 @@ function App() {
       return yearsObj;
     }, {});
 
-  const filteredExpenses =
+  const allCategories = expenses
+    .map((e) => {
+      return { code: e.category.toString(), name: e.category.toString() };
+    })
+    .reduce((catObj: any, currentCat) => {
+      catObj[currentCat.code] = currentCat;
+      return catObj;
+    }, {});
+
+  const filteredExpensesYear =
     !selectedYear || selectedYear?.code === "all"
       ? expenses
       : expenses.filter((e) => {
           return e.date.getFullYear().toString() === selectedYear?.code;
         });
+
+  const filteredExpensesCat =
+    !selectedCategory || selectedCategory?.code === "all"
+      ? filteredExpensesYear
+      : filteredExpensesYear.filter((e) => {
+          return e.category.toString() === selectedCategory?.code;
+        });
   return (
-    <div style={{ background: "coral" }}>
-      {expenses.length}
+    <div style={{ background: "lightgray" }}>
       <Header text={"My Expenses"} />
       <Controls {..._getControlsProps()} />
       {isAddExpenseVisible ? (
@@ -46,8 +66,8 @@ function App() {
           }}
         />
       ) : null}
-      <Reports />
-      <ExpensesList expenses={filteredExpenses} />
+      {isReportsVisible ? <Reports data={filteredExpensesCat} /> : null}
+      <ExpensesList expenses={filteredExpensesCat} />
     </div>
   );
 
@@ -55,9 +75,17 @@ function App() {
     return {
       changeExpenseVisibility: handler,
       isAddExpenseVisible: isAddExpenseVisible,
-      options: [{ code: "all", name: "All" }, ...Object.values(allYears)],
+      yearsOptions: [{ code: "all", name: "All" }, ...Object.values(allYears)],
+      categoriesOptions: [
+        { code: "all", name: "All" },
+        ...Object.values(allCategories),
+      ],
       setYearHandler: setSelectedYear,
       selectedYear,
+      selectedCategory: selectedCategory,
+      setCategoryHandler: setCategory,
+      isReportsVisible,
+      changeReportsVisibility: setIsReportsVisible,
     };
   }
 }
