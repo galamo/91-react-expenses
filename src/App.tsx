@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Header from "./components/header";
 import Controls from "./components/controls";
@@ -6,6 +6,7 @@ import AddExpense from "./components/add-expense";
 import ExpensesList from "./components/expenses-list";
 import Reports from "./components/reports";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Toast } from "primereact/toast";
 
 import axios from "axios";
 // type Expense = (typeof data)[0];
@@ -14,6 +15,7 @@ function App() {
   const [isReportsVisible, setIsReportsVisible] = useState(false);
   const [expenses, setExpenses] = useState<Array<any>>([]);
   const [isExpensesLoading, setIsExpensesLoading] = useState(false);
+  const toast = useRef<any>(null);
   const [selectedYear, setSelectedYear] = useState<{
     name: string;
     code: string;
@@ -36,7 +38,11 @@ function App() {
         });
         setExpenses(dataWithDates);
       } catch (error) {
-        //  popupMessage
+        toast?.current?.show({
+          severity: "error",
+          summary: "Something Went wrong",
+          detail: "Please try again",
+        });
       } finally {
         setIsExpensesLoading(false);
       }
@@ -80,6 +86,7 @@ function App() {
 
   return (
     <div style={{ background: "lightgray" }}>
+      <Toast ref={toast} />
       <Header text={"My Expenses"} />
       <Controls {..._getControlsProps()} />
       {isAddExpenseVisible ? (
