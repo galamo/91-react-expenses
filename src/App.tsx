@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Header from "./components/header";
 import Controls from "./components/controls";
 import AddExpense from "./components/add-expense";
 import ExpensesList from "./components/expenses-list";
 import Reports from "./components/reports";
-import { data } from "./data";
+import { ProgressSpinner } from "primereact/progressspinner";
+
+import axios from "axios";
 // type Expense = (typeof data)[0];
 function App() {
   const [isAddExpenseVisible, setIsExpenseVisible] = useState(false);
   const [isReportsVisible, setIsReportsVisible] = useState(false);
-  const [expenses, setExpenses] = useState(data);
+  const [expenses, setExpenses] = useState<Array<any>>([]);
+  const [isExpensesLoading, setIsExpensesLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState<{
     name: string;
     code: string;
@@ -22,6 +25,25 @@ function App() {
   const handler = (expenseVisibility: boolean) => {
     setIsExpenseVisible(expenseVisibility);
   };
+
+  useEffect(() => {
+    async function getExpenses() {
+      try {
+        setIsExpensesLoading(true);
+        const result = await axios.get("http://localhost:3500/expenses");
+        const dataWithDates = result.data.map((e: any) => {
+          return { ...e, date: new Date(e.date) };
+        });
+        setExpenses(dataWithDates);
+      } catch (error) {
+        //  popupMessage
+      } finally {
+        setIsExpensesLoading(false);
+      }
+    }
+
+    getExpenses();
+  }, []);
 
   const allYears = expenses
     .map((e) => {
@@ -55,6 +77,7 @@ function App() {
       : filteredExpensesYear.filter((e) => {
           return e.category.toString() === selectedCategory?.code;
         });
+
   return (
     <div style={{ background: "lightgray" }}>
       <Header text={"My Expenses"} />
@@ -66,8 +89,13 @@ function App() {
           }}
         />
       ) : null}
+
       {isReportsVisible ? <Reports data={filteredExpensesCat} /> : null}
-      <ExpensesList expenses={filteredExpensesCat} />
+      {isExpensesLoading ? (
+        <ProgressSpinner />
+      ) : (
+        <ExpensesList expenses={filteredExpensesCat} />
+      )}
     </div>
   );
 

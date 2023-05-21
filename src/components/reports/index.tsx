@@ -13,16 +13,6 @@ export default function Reports(props: { data: Array<any> }) {
     return chartDataObj;
   }, {});
 
-  //   const chartCategoriesResult = props.data.reduce((chartDataObj, currentExpense) => {
-  //     const { date, amount } = currentExpense;
-  //     const year = new Date(date).getFullYear();
-  //     if (!chartDataObj[year]) {
-  //       chartDataObj[year] = Number(amount);
-  //     } else {
-  //       chartDataObj[year] = chartDataObj[year] + Number(amount);
-  //     }
-  //     return chartDataObj;
-  //   }, {});
   const labels = Object.keys(chartYearsResult);
   const data = Object.values(chartYearsResult) as Array<number>;
   return (
