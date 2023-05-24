@@ -10,6 +10,7 @@ import { Toast } from "primereact/toast";
 const baseUrl = `http://localhost:3600`;
 import axios from "axios";
 import getYearsApi from "./services/getYearsApi";
+import addNewExpenseApi from "./services/addNewExpenseApi";
 // type Expense = (typeof data)[0];
 function App() {
   const [isAddExpenseVisible, setIsExpenseVisible] = useState(false);
@@ -31,27 +32,45 @@ function App() {
   const handler = (expenseVisibility: boolean) => {
     setIsExpenseVisible(expenseVisibility);
   };
-
-  useEffect(() => {
-    async function getExpenses() {
-      try {
-        setIsExpensesLoading(true);
-        const result = await axios.get(`${baseUrl}/expenses`);
-        const dataWithDates = result.data.map((e: any) => {
-          return { ...e, date: new Date(e.date) };
-        });
-        setExpenses(dataWithDates);
-      } catch (error) {
-        toast?.current?.show({
-          severity: "error",
-          summary: "Something Went wrong",
-          detail: "Please try again",
-        });
-      } finally {
-        setIsExpensesLoading(false);
-      }
+  async function getExpenses() {
+    try {
+      setIsExpensesLoading(true);
+      const result = await axios.get(`${baseUrl}/expenses`);
+      const dataWithDates = result.data.map((e: any) => {
+        return { ...e, date: new Date(e.date) };
+      });
+      setExpenses(dataWithDates);
+    } catch (error) {
+      toast?.current?.show({
+        severity: "error",
+        summary: "Something Went wrong",
+        detail: "Please try again",
+      });
+    } finally {
+      setIsExpensesLoading(false);
     }
-
+  }
+  async function addExpenseHandler(expense: any) { //onSave({...})
+    try {
+      const result: any = await addNewExpenseApi(expense);
+      if (result?.message === "success") {
+        toast?.current?.show({
+          severity: "success",
+          summary: `Expense ${expense.name} Added Successfully`,
+        });
+        getExpenses();
+      } else {
+        throw new Error("Response failed");
+      }
+    } catch (error) {
+      toast?.current?.show({
+        severity: "error",
+        summary: `Expense ${expense.name} Not Added`,
+      });
+    }
+    // setExpenses([...expenses, expense]);
+  }
+  useEffect(() => {
     async function getYears() {
       try {
         setIsFilterYearsLoading(true);
@@ -110,13 +129,7 @@ function App() {
       <Toast ref={toast} />
       <Header text={"My Expenses"} />
       <Controls {..._getControlsProps()} />
-      {isAddExpenseVisible ? (
-        <AddExpense
-          onSave={(expense: any) => {
-            setExpenses([...expenses, expense]);
-          }}
-        />
-      ) : null}
+      {isAddExpenseVisible ? <AddExpense addExpenseHandler={addExpenseHandler} /> : null}
 
       {isReportsVisible ? <Reports data={filteredExpensesCat} /> : null}
       {isExpensesLoading ? (
@@ -148,3 +161,7 @@ function App() {
 }
 
 export default App;
+
+
+
+

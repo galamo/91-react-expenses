@@ -17,14 +17,14 @@ const categories = [
   { name: "Other", code: "other" },
 ];
 
-export default function AddExpense(props: { onSave: Function }) {
+export default function AddExpense(props: { addExpenseHandler: Function }) {
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<string>();
   const [category, setCategory] = useState<any>();
 
   function handler() {
-    props.onSave({
+    props.addExpenseHandler({
       name: title,
       amount,
       date: new Date(date as any),
@@ -74,7 +74,9 @@ export default function AddExpense(props: { onSave: Function }) {
         />
       </div>
       <div className={css.buttonContainer}>
-        <Button onClick={handler}> Save </Button>
+        <Button disabled={!title} onClick={handler}>
+          Save
+        </Button>
       </div>
     </div>
   );

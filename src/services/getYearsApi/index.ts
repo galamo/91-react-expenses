@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = `http://localhost:3600`;
+import { baseUrl } from "..";
 
 interface IOption {
   code: string;

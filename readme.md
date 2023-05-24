@@ -13,3 +13,9 @@
 2. Show the results ( years : [2021,2022....]) in the DDL years filer
 3. Use the Api to get all categories from server: `http://localhost:3500/categories`
 4. Show the results ( categories : [Other....]) in the DDL categories filer
+
+# Ex Delete expense
+
+1. POST http://localhost:3500/delete-expense
+2. { name: "delete me expense" }
+3. implement delete expense functionality
