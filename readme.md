@@ -19,3 +19,8 @@
 1. POST http://localhost:3500/delete-expense
 2. { name: "delete me expense" }
 3. implement delete expense functionality
+
+
+# Homework Expenses Statistics
+1. GET http://localhost:3500//expenses/stats
+2. get the statistcs and present them in the pie chart 
