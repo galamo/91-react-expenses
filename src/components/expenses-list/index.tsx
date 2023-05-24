@@ -9,17 +9,22 @@ export default function ExpensesList(props: { expenses: Array<ExpenseType> }) {
   return (
     <div>
       <div className="card xl:flex xl:justify-content-center">
-        <OrderList
-          value={expenses}
-          itemTemplate={expenseTemplate}
-          header="Expenses"
-        ></OrderList>
+        {expenses.map((currentItem) => {
+          return (
+            <ExpenseTemplate
+              {...currentItem}
+              deleteFn={(item: any) => {
+                console.log(item); // continue from here
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
 }
 
-const expenseTemplate = (item: ExpenseType) => {
+const ExpenseTemplate = (item: any) => {
   return (
     <div
       key={item.name}
@@ -34,6 +39,7 @@ const expenseTemplate = (item: ExpenseType) => {
         </div>
       </div>
       <span className="font-bold text-900">${item.amount}</span>
+      <button onClick={() => item.deleteFn(item.name)}>delete</button>
     </div>
   );
 };
