@@ -1,6 +1,4 @@
-import React, { useState } from "react";
 import { Chart } from "primereact/chart";
-
 
 export default function Reports(props: { data: Array<any> }) {
   const chartYearsResult = props.data.reduce((chartDataObj, currentExpense) => {

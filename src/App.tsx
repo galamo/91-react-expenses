@@ -7,8 +7,9 @@ import ExpensesList from "./components/expenses-list";
 import Reports from "./components/reports";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
-
+const baseUrl = `http://localhost:3600`;
 import axios from "axios";
+import getYearsApi from "./services/getYearsApi";
 // type Expense = (typeof data)[0];
 function App() {
   const [isAddExpenseVisible, setIsExpenseVisible] = useState(false);
@@ -24,6 +25,9 @@ function App() {
     name: string;
     code: string;
   } | null>(null);
+  const [years, setYears] = useState([]);
+  const [isFilterYearsLoading, setIsFilterYearsLoading] = useState(false);
+
   const handler = (expenseVisibility: boolean) => {
     setIsExpenseVisible(expenseVisibility);
   };
@@ -32,7 +36,7 @@ function App() {
     async function getExpenses() {
       try {
         setIsExpensesLoading(true);
-        const result = await axios.get("http://localhost:3500/expenses");
+        const result = await axios.get(`${baseUrl}/expenses`);
         const dataWithDates = result.data.map((e: any) => {
           return { ...e, date: new Date(e.date) };
         });
@@ -48,18 +52,35 @@ function App() {
       }
     }
 
+    async function getYears() {
+      try {
+        setIsFilterYearsLoading(true);
+        const years = await getYearsApi();
+        setYears(years as any);
+      } catch (error) {
+        toast?.current?.show({
+          severity: "error",
+          summary: "Years missing",
+          detail: "Please try again",
+        });
+      } finally {
+        setIsFilterYearsLoading(false);
+      }
+    }
+
     getExpenses();
+    getYears();
   }, []);
 
-  const allYears = expenses
-    .map((e) => {
-      const year = new Date(e.date).getFullYear().toString();
-      return { code: year, name: year };
-    })
-    .reduce((yearsObj: any, currentYear) => {
-      yearsObj[currentYear.code] = currentYear;
-      return yearsObj;
-    }, {});
+  //   const allYears = expenses
+  //     .map((e) => {
+  //       const year = new Date(e.date).getFullYear().toString();
+  //       return { code: year, name: year };
+  //     })
+  //     .reduce((yearsObj: any, currentYear) => {
+  //       yearsObj[currentYear.code] = currentYear;
+  //       return yearsObj;
+  //     }, {});
 
   const allCategories = expenses
     .map((e) => {
@@ -110,7 +131,7 @@ function App() {
     return {
       changeExpenseVisibility: handler,
       isAddExpenseVisible: isAddExpenseVisible,
-      yearsOptions: [{ code: "all", name: "All" }, ...Object.values(allYears)],
+      yearsOptions: [{ code: "all", name: "All" }, ...years],
       categoriesOptions: [
         { code: "all", name: "All" },
         ...Object.values(allCategories),
@@ -121,6 +142,7 @@ function App() {
       setCategoryHandler: setCategory,
       isReportsVisible,
       changeReportsVisibility: setIsReportsVisible,
+      isFilterYearsLoading,
     };
   }
 }

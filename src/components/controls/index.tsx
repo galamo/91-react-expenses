@@ -1,6 +1,8 @@
 import { Button } from "primereact/button";
 import css from "./style.module.css";
 import { Dropdown } from "primereact/dropdown";
+import { ProgressSpinner } from "primereact/progressspinner";
+import { Skeleton } from "primereact/skeleton";
 
 export default function Controls(props: {
   isAddExpenseVisible: boolean;
@@ -13,6 +15,7 @@ export default function Controls(props: {
   selectedYear: any;
   selectedCategory: any;
   setCategoryHandler: Function;
+  isFilterYearsLoading: boolean;
 }) {
   const {
     isAddExpenseVisible,
@@ -40,17 +43,22 @@ export default function Controls(props: {
         >
           Reports
         </Button>
-        <Dropdown
-          value={selectedYear}
-          onChange={(e) => {
-            props.setYearHandler(e.value);
-          }}
-          options={props.yearsOptions}
-          optionLabel="name"
-          placeholder="Select a Year"
-          filter
-          className="w-full md:w-14rem"
-        />
+        {props.isFilterYearsLoading ? (
+          <Skeleton width="10rem" height="4rem"></Skeleton>
+        ) : (
+          <Dropdown
+            value={selectedYear}
+            onChange={(e) => {
+              props.setYearHandler(e.value);
+            }}
+            options={props.yearsOptions}
+            optionLabel="name"
+            placeholder="Select a Year"
+            filter
+            className="w-full md:w-14rem"
+          />
+        )}
+
         <Dropdown
           value={props.selectedCategory}
           onChange={(e) => {
