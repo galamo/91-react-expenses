@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 // import "./App.css";
-import Header from "components/header";
+import Header from "../../header";
 import Controls from "./controls";
 import AddExpense from "./add-expense";
 import ExpensesList from "./expenses-list";
-import Reports from "components/pages/expenses/reports";
+import Reports from "./reports";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
 const baseUrl = `http://localhost:3600`;
