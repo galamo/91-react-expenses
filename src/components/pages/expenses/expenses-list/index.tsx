@@ -1,5 +1,4 @@
-import { data } from "../../data";
-
+import { data } from "../../../../data";
 import { OrderList } from "primereact/orderlist";
 
 type ExpenseType = (typeof data)[0];

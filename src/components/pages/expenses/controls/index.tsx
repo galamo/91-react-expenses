@@ -1,7 +1,6 @@
 import { Button } from "primereact/button";
 import css from "./style.module.css";
 import { Dropdown } from "primereact/dropdown";
-import { ProgressSpinner } from "primereact/progressspinner";
 import { Skeleton } from "primereact/skeleton";
 
 export default function Controls(props: {

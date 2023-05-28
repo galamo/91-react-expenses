@@ -1,19 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import "./App.css";
-import Header from "./components/header";
-import Controls from "./components/controls";
-import AddExpense from "./components/add-expense";
-import ExpensesList from "./components/expenses-list";
-import Reports from "./components/reports";
+// import "./App.css";
+import Header from "components/header";
+import Controls from "./controls";
+import AddExpense from "./add-expense";
+import ExpensesList from "./expenses-list";
+import Reports from "components/pages/expenses/reports";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { Toast } from "primereact/toast";
 const baseUrl = `http://localhost:3600`;
 import axios from "axios";
-import getYearsApi from "./services/getYearsApi";
-import addNewExpenseApi from "./services/addNewExpenseApi";
-import deleteExpenseApi from "./services/deleteExpenseApi";
-// type Expense = (typeof data)[0];
-function AppComponent() {
+import getYearsApi from "../../../services/getYearsApi";
+import addNewExpenseApi from "../../../services/addNewExpenseApi";
+import deleteExpenseApi from "../../../services/deleteExpenseApi";
+function Expenses() {
   const [isAddExpenseVisible, setIsExpenseVisible] = useState(false);
   const [isReportsVisible, setIsReportsVisible] = useState(false);
   const [expenses, setExpenses] = useState<Array<any>>([]);
@@ -189,4 +188,4 @@ function AppComponent() {
   }
 }
 
-export default AppComponent;
+export default Expenses;

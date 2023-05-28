@@ -1,40 +1,17 @@
-import { useEffect } from "react";
 import { Button } from "primereact/button";
-import { Menu } from "primereact/menu";
-
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
-
-function Login() {
-  useEffect(() => {
-    console.log("Login mounted..");
-  }, []);
-  return <h1> Login</h1>;
-}
-
-function Register() {
-  useEffect(() => {
-    console.log("Register mounted..");
-
-    return () => {
-      console.log("Register Unmount - component destroyed");
-    };
-  }, []);
-
-  return <h1> Register</h1>;
-}
-
-function Users() {
-  useEffect(() => {
-    console.log("Users mounted..");
-  }, []);
-  return <h1> Users</h1>;
-}
-
+import Login from "./components/pages/login";
+import Register from "./components/pages/register";
+import Users from "./components/pages/users";
+import NotFound from "./components/pages/not-found";
+import Expenses from "./components/pages/expenses";
+import "./App.css";
 interface IRoute {
   path: string;
   component: () => JSX.Element;
   label: string;
   icon: string;
+  isVisible?: boolean;
 }
 const routes: Array<IRoute> = [
   {
@@ -42,12 +19,34 @@ const routes: Array<IRoute> = [
     component: Login,
     label: "Login Now",
     icon: "pi pi-login",
+    isVisible: true,
   },
   {
     path: "/register",
     component: Register,
     label: "Register here!",
     icon: "pi pi-sign-in",
+    isVisible: true,
+  },
+  {
+    path: "/",
+    component: Users,
+    label: "My Users!",
+    icon: "pi pi-user",
+    isVisible: true,
+  },
+  {
+    path: "/expenses",
+    component: Expenses,
+    label: "My Expenses",
+    icon: "pi pi-user",
+    isVisible: true,
+  },
+  {
+    path: "*",
+    component: NotFound,
+    label: "not found",
+    icon: "pi pi-notfound",
   },
 ];
 
@@ -56,45 +55,43 @@ export default function App() {
   return (
     <div>
       <BrowserRouter>
-        <div
-          style={{
-            display: "flex",
-            border: "1px solid black",
-            borderRadius: "10px",
-            padding: "10px",
-            width: "80%",
-            margin: "auto",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* <Link to="/login">
-            <Button label="Login" icon="pi pi-user" />
-          </Link>
-          <Link to="/register">
-            <Button label="Register" icon="pi pi-sign-in" />
-          </Link>
-          <Link to="/users">
-            <Button label="Users" icon="pi pi-user" />
-          </Link>
-          <Link to="/users">
-            <Button label="Logout" icon="pi pi-sign-out" />
-          </Link> */}
-          {/* IMPLEMENT HERE THE LINKS MAP */}
-          {/* {routes.map((route: IRoute) => {
-           WHAT SHOULD BE HERE????????????????
-          })} */}
-        </div>
+        <AppLinks routes={routes} />
         <Routes>
           <>
             {routes.map((route: IRoute) => {
               return <Route path={route.path} Component={route.component} />;
             })}
-            {/* <Route path="/login" Component={Login} />
-            <Route path="/register" Component={Register} />
-            <Route path="/users" Component={Users} /> */}
           </>
         </Routes>
       </BrowserRouter>
+    </div>
+  );
+}
+
+function AppLinks(props: { routes: Array<IRoute> }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        border: "1px solid black",
+        borderRadius: "10px",
+        padding: "10px",
+        width: "80%",
+        margin: "auto",
+        justifyContent: "space-between",
+      }}
+    >
+      {props.routes
+        .filter((r) => r.isVisible)
+        .map((route: IRoute) => {
+          return (
+            <>
+              <Link to={route.path}>
+                <Button label={route.label} icon={route.icon} />
+              </Link>
+            </>
+          );
+        })}
     </div>
   );
 }
