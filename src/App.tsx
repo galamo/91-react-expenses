@@ -11,6 +11,7 @@ const baseUrl = `http://localhost:3600`;
 import axios from "axios";
 import getYearsApi from "./services/getYearsApi";
 import addNewExpenseApi from "./services/addNewExpenseApi";
+import deleteExpenseApi from "./services/deleteExpenseApi";
 // type Expense = (typeof data)[0];
 function App() {
   const [isAddExpenseVisible, setIsExpenseVisible] = useState(false);
@@ -50,7 +51,8 @@ function App() {
       setIsExpensesLoading(false);
     }
   }
-  async function addExpenseHandler(expense: any) { //onSave({...})
+  async function addExpenseHandler(expense: any) {
+    //onSave({...})
     try {
       const result: any = await addNewExpenseApi(expense);
       if (result?.message === "success") {
@@ -70,6 +72,28 @@ function App() {
     }
     // setExpenses([...expenses, expense]);
   }
+
+  async function deleteExpenseHandler(expenseName: string) {
+    try {
+      const result: any = await deleteExpenseApi(expenseName);
+      if (result?.message?.toLowerCase() === "deleted successfully") {
+        toast?.current?.show({
+          severity: "success",
+          summary: `Expense ${expenseName} Deleted Successfully`,
+        });
+        getExpenses();
+      } else {
+        throw new Error("Response failed");
+      }
+    } catch (error) {
+      toast?.current?.show({
+        severity: "error",
+        summary: `Expense ${expenseName} Was Not deleted`,
+      });
+    }
+    // setExpenses([...expenses, expense]);
+  }
+
   useEffect(() => {
     async function getYears() {
       try {
@@ -129,13 +153,18 @@ function App() {
       <Toast ref={toast} />
       <Header text={"My Expenses"} />
       <Controls {..._getControlsProps()} />
-      {isAddExpenseVisible ? <AddExpense addExpenseHandler={addExpenseHandler} /> : null}
+      {isAddExpenseVisible ? (
+        <AddExpense addExpenseHandler={addExpenseHandler} />
+      ) : null}
 
       {isReportsVisible ? <Reports data={filteredExpensesCat} /> : null}
       {isExpensesLoading ? (
         <ProgressSpinner />
       ) : (
-        <ExpensesList expenses={filteredExpensesCat} />
+        <ExpensesList
+          expenses={filteredExpensesCat}
+          onDelete={deleteExpenseHandler}
+        />
       )}
     </div>
   );
@@ -161,7 +190,3 @@ function App() {
 }
 
 export default App;
-
-
-
-

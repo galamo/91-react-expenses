@@ -4,7 +4,10 @@ import { OrderList } from "primereact/orderlist";
 
 type ExpenseType = (typeof data)[0];
 
-export default function ExpensesList(props: { expenses: Array<ExpenseType> }) {
+export default function ExpensesList(props: {
+  expenses: Array<ExpenseType>;
+  onDelete: Function;
+}) {
   const { expenses } = props;
 
   const expenseTemplate = (item: any) => {
@@ -22,7 +25,13 @@ export default function ExpensesList(props: { expenses: Array<ExpenseType> }) {
           </div>
         </div>
         <span className="font-bold text-900">${item.amount}</span>
-        <button>delete</button>
+        <button
+          onClick={() => {
+            props.onDelete(item.name);
+          }}
+        >
+          <i className="pi pi-trash"></i>
+        </button>
       </div>
     );
   };

@@ -25,3 +25,21 @@
 1. GET http://localhost:3600/expenses/stats
 2. get the statistcs and present the data in the pie chart
 3. you can create the `useEffect` inside <Reports/> component (for the practice)
+
+
+# React Recap
+1. React
+2. Declarative
+3. Dont repeat yourself - reuse
+4. Vite / create-react-app
+5. State
+6. props 
+7. Stateless 
+8. Statefull 
+9. hooks ( useState, useEffect, useRef , customHooks? )
+10. Component lifecycle ( mounting, updating, unmount ? )
+11. code structure, components, services etc..
+12. TS 
+13. 
+
+
