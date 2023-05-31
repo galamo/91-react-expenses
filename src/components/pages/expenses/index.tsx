@@ -151,20 +151,21 @@ function Expenses() {
     <div style={{ background: "lightgray" }}>
       <Toast ref={toast} />
       <Header text={"My Expenses"} />
+      {/* <WithLoading isLoading={isFilterYearsLoading}> */}
       <Controls {..._getControlsProps()} />
+      {/* </WithLoading> */}
+     
       {isAddExpenseVisible ? (
         <AddExpense addExpenseHandler={addExpenseHandler} />
       ) : null}
 
       {isReportsVisible ? <Reports data={filteredExpensesCat} /> : null}
-      {isExpensesLoading ? (
-        <ProgressSpinner />
-      ) : (
+      <WithLoading isLoading={isExpensesLoading}>
         <ExpensesList
-          expenses={filteredExpensesCat}
-          onDelete={deleteExpenseHandler}
-        />
-      )}
+            expenses={filteredExpensesCat}
+            onDelete={deleteExpenseHandler}
+          />
+      </WithLoading>
     </div>
   );
 
@@ -189,3 +190,10 @@ function Expenses() {
 }
 
 export default Expenses;
+
+
+
+function WithLoading(props: { isLoading:boolean, children:any }){
+  if(props.isLoading) return  "Loading Rafi is developer"
+  else return props.children
+}
