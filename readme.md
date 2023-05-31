@@ -41,6 +41,7 @@
 11. code structure, components, services etc..
 12. TS
 13. React router dom
+14. React lazy
 
 # Homework
 
@@ -76,8 +77,13 @@
 email: `dev@gmail.com`
 password: `dev1234`
 
-
 # Ex 31/5 Class
+
 1. create new component systemPreferences
 2. The component will present header "System preferences" (ONLY HEADER)
 3. apply lazy loading on systemPreferences component
+
+# Homework
+
+1. apply the `WithLoading` on Login button 
+2. understand what is useImageLoading
