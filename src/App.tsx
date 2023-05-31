@@ -16,6 +16,7 @@ const UsersLazy = lazy(() => import('./components/pages/users'));
 // import Expenses from "./components/pages/expenses";
 
 import "./App.css";
+import ImageCp from "./components/ui/imageComponent";
 interface IRoute {
   path: string;
   component: React.LazyExoticComponent<() => JSX.Element>
@@ -64,6 +65,7 @@ export default function App() {
   console.log("render all my application");
   return (
     <div>
+      <ImageCp imageUrl="https://fiscalfitnessphx.com/wp-content/uploads/2019/10/The-4-Types-of-Expenses-You-Should-Include-In-Your-Budget.png"/>
       <Suspense fallback={<span>Loading...</span>}>
       <BrowserRouter>
         <AppLinks routes={routes} />

@@ -194,6 +194,6 @@ export default Expenses;
 
 
 function WithLoading(props: { isLoading:boolean, children:any }){
-  if(props.isLoading) return  "Loading Rafi is developer"
+  if(props.isLoading) return  <ProgressSpinner/>
   else return props.children
 }
