@@ -75,3 +75,9 @@
 
 email: `dev@gmail.com`
 password: `dev1234`
+
+
+# Ex 31/5 Class
+1. create new component systemPreferences
+2. The component will present header "System preferences" (ONLY HEADER)
+3. apply lazy loading on systemPreferences component
